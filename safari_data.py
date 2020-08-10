@@ -1,3 +1,5 @@
+import math
+import logging
 import matplotlib
 import matplotlib.figure as figure
 import matplotlib.animation as animation
@@ -24,19 +26,35 @@ class Data:
                                                      disabled=False)
         display(widgets.HBox([self.conversion_button]))
 
+        self.max_rows = 4
         self.nplots = len(channels)
+        # Try to arrange plot in columns of 4
+        self.ncols = math.ceil(self.nplots / self.max_rows)
+        self.nrows = self.max_rows if self.ncols > 1 else self.nplots
         self.plot_title_fontsize = 12
         self.plot_label_fontsize = 12
         self.tick_count = 5
         self.props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
 
-        self.fig, axs = plt.subplots(self.nplots, 1, figsize=(8, 8), sharex='col')
+        self.fig, axs = plt.subplots(self.nrows, self.ncols, figsize=(8, 8), sharex='all')
+        row = 0
+        col = 0
         for channel in self.channels:
             if self.nplots <= 1:
                 self.channels[channel]["axis"] = axs
             else:
-                self.channels[channel]["axis"] = axs[0]
-                axs = np.delete(axs, 0)
+                if self.ncols > 1:
+                    self.channels[channel]["axis"] = axs[row][col]
+                    #axs = np.delete(axs[row], 0)
+                else:
+                    self.channels[channel]["axis"] = axs[row]
+                    #axs = np.delete(axs, 0)
+                    
+                if col < (self.ncols -1):
+                    col += 1 
+                else:
+                    col = 0
+                    row += 1
 
             self.channels[channel]["axis"].set_title(self.channels[channel]["plot_title"], fontsize=12)
             self.channels[channel]["axis"].set_ylabel(self.channels[channel]["y_label"], color=self.channels[channel]["axes_color"])
@@ -131,12 +149,9 @@ class Data:
                                                                 transform=self.channels[channel]["axis"].transAxes, 
                                                                 fontsize=10, verticalalignment='top', bbox=self.props)
                         except ValueError:
-                            print("Dimension Error")
-                            print(f'Timestamps Len: {len(self.channels[channel]["timestamps"])}')
-                            print(f'Voltages Len: {len(self.channels[channel]["voltages"])}')
+                            #logging.exception(e)
+                            pass
 
             except Exception as e:
-                logging.exception(e)
-                print("Dimension Error 1")
-                print(f'Timestamps Len: {len(self.channels[channel]["timestamps"])}')
-                print(f'Voltages Len: {len(self.channels[channel]["voltages"])}')
+                #logging.exception(e)
+                pass
