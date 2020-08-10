@@ -18,7 +18,8 @@ from ipywidgets import interact, interact_manual, Layout, Box, Button, Label, Fl
 
 # Class for Serial connectivity
 class Serial:
-    def __init__(self, channels):
+    def __init__(self, channels, config):
+        self.config = config
         self.BAUD = 115200  # Serial Baud Rate
         self.serial = None
         self.serial_buffer = ""
@@ -54,6 +55,9 @@ class Serial:
         self.data_collect_button = widgets.Button(description = 'Start Data Collection')
         self.data_collect_button.on_click(self.on_data_collect_button_clicked)
         self.data_collect_button.disabled = True
+        
+        if self.channels == None:
+            self.data_collect_button.layout.visibility = 'hidden'
         
         # Display the Serial widgets
         display(widgets.HBox([self.serial_port_list, self.serial_connection_button, self.serial_scan_button]))
@@ -112,6 +116,9 @@ class Serial:
             self.__serial_ctrl_c()
             time.sleep(0.25)
             self.__login()
+            time.sleep(0.25)
+            if self.config != None:
+                self.write_file_to_meerkat(self.config, 'ad7124_config.py')
             return 0
         except Exception as e:
             logging.exception(e)
@@ -152,6 +159,16 @@ class Serial:
             line = line.rstrip('\n')
             #print(str("echo '" + line + "' >> /root/python/" + file + "\n").encode('utf-8'))
             self.serial.write(str("echo \"" + line + "\" >> /root/python/" + file + "\n").encode('utf-8'))
+        f.close()
+        
+    def write_file_to_meerkat(self, src_file, dst_file):
+        self.serial.write(str("rm /root/python/" + dst_file + "\n").encode('utf-8'))
+        f = open(src_file, "r")
+        for line in f:
+            #Remove excess newline character since we will insert one line at a time
+            line = line.rstrip('\n')
+            #print(str("echo '" + line + "' >> /root/python/" + file + "\n").encode('utf-8'))
+            self.serial.write(str("echo \"" + line + "\" >> /root/python/" + dst_file + "\n").encode('utf-8'))
         f.close()
 
     def read_serial(self):
@@ -209,9 +226,21 @@ class Serial:
                 channel, timestamp, voltage, code = p.findall(data_string)
             else:
                 channel, voltage, code = p.findall(data_string)
+            
+            # Check if voltage conversion function is provided
+            if self.channels[channel]["voltage_format_func"] != None:
+                self.channels[channel]["voltages"].append(self.channels[channel]["voltage_format_func"](float(voltage)))
+            else:
+                # No voltage conversion function specified, just append raw voltage rounded to 4 decimals
+                self.channels[channel]["voltages"].append(round(float(voltage), 4))
                 
-            self.channels[channel]["voltages"].append(self.channels[channel]["voltage_format_func"](float(voltage)))
-            self.channels[channel]["values"].append(self.channels[channel]["value_conversion_func"](float(voltage), float(code)))
+            # Check if value conversion function is provided
+            if self.channels[channel]["value_conversion_func"] != None:
+                self.channels[channel]["values"].append(self.channels[channel]["value_conversion_func"](float(voltage), float(code)))
+            else:
+                # No value conversion function specified, just append raw voltage rounded to 4 decimals
+                self.channels[channel]["values"].append(round(float(voltage), 4))
+                
             self.channels[channel]["timestamps"].append(datetime.datetime.utcnow().strftime('%S.%f')[:-3])
 
             # Limit lists to the max elements value
