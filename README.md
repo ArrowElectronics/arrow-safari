@@ -48,4 +48,4 @@ You can [download](https://github.com/ArrowElectronics/arrow-safari/archive/mast
     - The notebook should open in a new tab
 ![Notebook Select](/images/safari_directory.png)
 3. You are now ready to run the Safari application
-![Notebook Running](/images/safari_notebook_running.png)
+![Notebook Running](/images/safari_notebook_running.PNG)
