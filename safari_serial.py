@@ -117,6 +117,7 @@ class Serial:
             time.sleep(0.25)
             self.__login()
             time.sleep(0.25)
+            self.serial.write(str("\n").encode('utf-8'))
             return 0
         except Exception as e:
             logging.exception(e)
