@@ -117,8 +117,6 @@ class Serial:
             time.sleep(0.25)
             self.__login()
             time.sleep(0.25)
-            if self.config != None:
-                self.write_file_to_meerkat(self.config, 'ad7124_config.py')
             return 0
         except Exception as e:
             logging.exception(e)
@@ -195,7 +193,8 @@ class Serial:
                             # Only want to enable buttons if we can confirm there is a good connection to the board
                             self.__serial_connection_established()
                             self.__login()
-                        elif "-sh: root: not found" in self.serial_buffer:
+                        elif (("-sh: root: not found" in self.serial_buffer) or 
+                              ("-sh: root: command not found" in self.serial_buffer)):
                             # Only want to enable buttons if we can confirm there is a good connection to the board
                             self.__serial_connection_established()
                         elif "AD7124 error" in self.serial_buffer:
@@ -291,6 +290,8 @@ class Serial:
         self.serial_connection_button.description = "Disconnect"
         self.data_collect_button.description = "Start Data Collection"
         self.data_collect_button.disabled = False
+        if self.config != None:
+                self.write_file_to_meerkat(self.config, 'ad7124_config.py')
     
     def __serial_ctrl_c(self):
         """ Send a ctrl+c command to the terminal
