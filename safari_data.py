@@ -58,7 +58,8 @@ class Data:
 
             self.channels[channel]["axis"].set_title(self.channels[channel]["plot_title"], fontsize=12)
             self.channels[channel]["axis"].set_ylabel(self.channels[channel]["y_label"], color=self.channels[channel]["axes_color"])
-            self.channels[channel]["axis"].tick_params(axis='y', labelcolor=self.channels[channel]["axes_color"])
+            self.channels[channel]["axis"].set_xlabel("Timestamp (seconds.milliseconds)", color=self.channels[channel]["axes_color"])
+            self.channels[channel]["axis"].tick_params(axis='both', labelcolor=self.channels[channel]["axes_color"])
             self.channels[channel]["axis"].xaxis.set_tick_params(labelbottom=True)
             self.channels[channel]["axis"].xaxis.set_major_locator(plt.MaxNLocator(self.tick_count))
             self.channels[channel]["annotation"] = self.channels[channel]["axis"].annotate("", xy=(0, 0), xytext=(-20, 20),
@@ -107,6 +108,8 @@ class Data:
             self.channels[channel]["axis"].set_title(self.channels[channel]["plot_title"], fontsize=12)
             self.channels[channel]["axis"].yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
             self.channels[channel]["axis"].xaxis.set_major_locator(plt.MaxNLocator(self.tick_count))
+            self.channels[channel]["axis"].set_xlabel("Timestamp (seconds.milliseconds)", color=self.channels[channel]["axes_color"])
+            self.channels[channel]["axis"].tick_params(axis='both', labelcolor=self.channels[channel]["axes_color"])
 
             try:
                 if ((self.conversion_button.value == 'Voltage' and len(self.channels[channel]["voltages"]) > 0) or 
