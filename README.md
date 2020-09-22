@@ -6,10 +6,10 @@ The Safari Wiki consists of the following:
 
 The Code page of the Wiki contains the following files:
 
-Images folder: contains all graphics
+Images folder: Contains all pictures
 
 
-Images:
+SD Card Images:
 <ul>
 <li> safari.img.bz2
 <li> safari_v2.img.bz2
@@ -33,7 +33,8 @@ Python Files:
 </ul>
 
 The Safari demo uses this file:
-safari.exe
+<ul>
+<li> safari.exe
 
 
 
