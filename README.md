@@ -5,21 +5,32 @@ The Safari Wiki consists of the following:
 4.	Directions on running the FAE demo on a PC
 
 The Code page of the Wiki contains the following files:
+
 Images folder: contains all graphics
+
+
 Images:
-safari.img.bz2
-safari_v2.img.bz2
+<ul>
+<li> safari.img.bz2
+<li> safari_v2.img.bz2
+</ul>
+
 
 IPython Files:
-Safari_IPython.ipynb
-Safari_IPython_Modifying_Registers.ipynb
-Safari_IPython_Test_Mode.ipynb
+<ul>
+<li> Safari_IPython.ipynb
+<li> Safari_IPython_Modifying_Registers.ipynb
+<li> Safari_IPython_Test_Mode.ipynb
+</ul>
 
-Python Files
-ad7124.py
-ad7124_config.py
-ad7124_default_config.py
-ad7124_test_config.py
+
+Python Files:
+<ul>
+<li> ad7124.py
+<li> ad7124_config.py
+<li> ad7124_default_config.py
+<li> ad7124_test_config.py
+</ul>
 
 The Safari demo uses this file:
 safari.exe
