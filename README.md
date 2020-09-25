@@ -16,11 +16,12 @@ SD Card Images:
 </ul>
 
 
-IPython Files:
+Jupyter (IPython) Files:
 <ul>
 <li> Safari_IPython.ipynb
 <li> Safari_IPython_Modifying_Registers.ipynb
 <li> Safari_IPython_Test_Mode.ipynb
+<li> safari_env.yaml
 </ul>
 
 
@@ -30,6 +31,9 @@ Python Files:
 <li> ad7124_config.py
 <li> ad7124_default_config.py
 <li> ad7124_test_config.py
+<li> safari.py
+<li> safari_data.py
+<li> safari_serial.py
 </ul>
 
 The Safari demo uses this file:
@@ -40,4 +44,4 @@ The Safari demo uses this file:
 
 *Note: the IPython Notebook is now known as the Jupyter Notebook
 
-See https://ipython.org/notebook.html#:~:text=(Formerly%20known%20as%20the%20IPython,mathematics%2C%20plots%20and%20rich%20media.
+See https://ipython.org/notebook.html# 
